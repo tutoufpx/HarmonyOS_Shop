@@ -1,4 +1,4 @@
-import { TabBarItem } from 'basic'
+import { Logger, TabBarItem } from 'basic'
 import { CartView } from 'cart/src/main/ets/views/CartView/CartView'
 import { CategoryView } from 'category/src/main/ets/view/CategoryView/CategoryView'
 
