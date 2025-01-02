@@ -1,6 +1,9 @@
 //购物车
- export interface TabBarItem {
-  text: string
-  img: ResourceStr
-  selImg: ResourceStr
+@Component
+export struct CartView {
+  build() {
+    Column() {
+      Text('购物车')
+    }
+  }
 }

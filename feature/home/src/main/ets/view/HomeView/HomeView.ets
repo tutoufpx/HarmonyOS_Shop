@@ -1,6 +1,8 @@
 //分类
-export interface TabBarItem {
-  text: string
-  img: ResourceStr
-  selImg: ResourceStr
+@Component
+export struct HomeView {
+  build() {
+    Text('123')
+
+  }
 }

@@ -1,4 +1,10 @@
 import { TabBarItem } from 'basic'
+import { CartView } from 'cart/src/main/ets/views/CartView/CartView'
+import { CategoryView } from 'category/src/main/ets/view/CategoryView/CategoryView'
+
+import { HomeView } from 'home/src/main/ets/view/HomeView/HomeView'
+import { MyHome } from 'my/src/main/ets/view/MyHome/MyHome'
+
 
 @Entry
 @Component
@@ -19,7 +25,7 @@ struct Index {
         .width(24)
         .aspectRatio(1)
       Text(item.text)
-        
+
         .fontSize(12)
     }
     .justifyContent(FlexAlign.SpaceEvenly)
@@ -30,6 +36,15 @@ struct Index {
     Tabs({ barPosition: BarPosition.End, index: $$this.currentTabIndex }) {
       ForEach(this.Tablist, (item: TabBarItem, i: number) => {
         TabContent() {
+          if (i === 0) {
+            HomeView()
+          } else if (i === 1) {
+            CategoryView()
+          } else if (i === 2) {
+            CartView()
+          } else if (i === 3) {
+            MyHome()
+          }
 
         }.tabBar(this.tabBuilder(item, i))
       })
