@@ -1,7 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { display, window } from '@kit.ArkUI';
-import { screenManagerByMedia, Logger, BreakpointConstants } from 'basic'
+import { Logger, BreakpointConstants } from 'basic'
 
 export default class EntryAbility extends UIAbility {
   private windowObj?: window.Window

@@ -1,6 +1,5 @@
-import { Logger, TabBarItem, GlobalVariable, BreakpointConstants } from 'basic'
+import { Logger, TabBarItem, BreakpointConstants, BreakPointType } from 'basic'
 
-import { BreakPointType } from 'basic/src/main/ets/viewmodel/break_point'
 import { CartView } from 'cart/src/main/ets/views/CartView/CartView'
 import { CategoryView } from 'category/src/main/ets/view/CategoryView/CategoryView'
 
@@ -14,7 +13,7 @@ struct Index {
   @StorageProp('currentBreakpoint') breakPoint: string = 'xs'
   //  当前的tab下标
   @State currentTabIndex: number = 0
-  Tablist: TabBarItem[] = [
+  TabList: TabBarItem[] = [
     { text: '首页', img: $r('app.media.ic_public_home_normal'), selImg: $r('app.media.ic_public_home_active') },
     { text: '分类', img: $r('app.media.ic_public_pro_normal'), selImg: $r('app.media.ic_public_pro_active') },
     { text: '购物袋', img: $r('app.media.ic_public_cart_normal'), selImg: $r('app.media.ic_public_cart_active') },
@@ -44,7 +43,7 @@ struct Index {
         lg: BarPosition.Start
       }).getValue(this.breakPoint), index: $$this.currentTabIndex
     }) {
-      ForEach(this.Tablist, (item: TabBarItem, i: number) => {
+      ForEach(this.TabList, (item: TabBarItem, i: number) => {
         TabContent() {
           if (i === 0) {
             HomeView()

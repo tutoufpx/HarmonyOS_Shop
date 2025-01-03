@@ -25,6 +25,7 @@
         "startWindowIcon": "$media:startIcon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
+        "minWindowWidth": 331,// 最小窗口宽度 2in1 设备才可以测试
         "skills": [
           {
             "entities": [

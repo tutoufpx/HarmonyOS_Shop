@@ -9,11 +9,9 @@ export * from './src/main/ets/viewmodel/index'
 //导出Logger
 export * from './src/main/ets/utils/Logger'
 
-//导出屏幕管理
-export * from './src/main/ets/utils/BreakPointType'
-
 //导出网络请求
 export * from './src/main/ets/utils/Request'
 
-//导出断点
+//导出断点工具
 export * from './src/main/ets/utils/BreakPointType'
+

@@ -1,6 +1,3 @@
-export * from './GlobalVariable' //导出全局变量
-
-
 export class BreakpointConstants {
   // 手表等超小屏
   static readonly XS: string = 'xs';

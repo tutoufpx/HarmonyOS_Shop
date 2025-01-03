@@ -1,10 +1,10 @@
 //配置axios
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios'
-import { GlobalVariable } from '../constants'
+
 
 //基础配置
 const request = axios.create({
-  baseURL: GlobalVariable.BASE_URL,
+  baseURL: 'https://meikou-api.itheima.net/',
   timeout: 5000,
 })
 
