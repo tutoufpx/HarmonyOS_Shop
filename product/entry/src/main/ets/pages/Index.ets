@@ -1,5 +1,4 @@
-import { Logger, TabBarItem ,GlobalVariable} from 'basic'
-
+import { Logger, TabBarItem, GlobalVariable, BreakpointConstants } from 'basic'
 
 import { BreakPointType } from 'basic/src/main/ets/viewmodel/break_point'
 import { CartView } from 'cart/src/main/ets/views/CartView/CartView'
@@ -12,8 +11,7 @@ import { MyHome } from 'my/src/main/ets/view/MyHome/MyHome'
 @Entry
 @Component
 struct Index {
-  @StorageProp(GlobalVariable.BREAK_POINT_KEY)
-  breakPoint: string = ""
+  @StorageProp('currentBreakpoint') breakPoint: string = 'xs'
   //  当前的tab下标
   @State currentTabIndex: number = 0
   Tablist: TabBarItem[] = [
@@ -63,11 +61,11 @@ struct Index {
 
     }
     .scrollable(false)
-    .vertical(new BreakPointType({
-      xs: false,
-      sm: false,
-      md: false,
-      lg: true
+    .barPosition(new BreakPointType({
+      sm: BarPosition.End,
+      md: BarPosition.End,
+      lg: BarPosition.Start
     }).getValue(this.breakPoint))
+    .vertical(this.breakPoint === BreakpointConstants.LG ? true : false)
   }
 }

@@ -1,31 +1,29 @@
-// 声明一个interface  对应每个断点的值
-interface BreakPointValue<T> {
+// commons/basic/src/main/ets/utils/BreakPointType.ets
+declare interface BreakPointTypeOption<T> {
   xs?: T
   sm?: T
   md?: T
   lg?: T
 }
 
-// 断点工具
 export class BreakPointType<T> {
-  options: BreakPointValue<T>
+  options: BreakPointTypeOption<T>
 
-  constructor(opt: BreakPointValue<T>) {
-    this.options = opt // 把四个断点对应的值给了这个对象
+  constructor(option: BreakPointTypeOption<T>) {
+    this.options = option
   }
 
-  // 提供一个获取断点值
-  getValue(breakPoint: string): T {
-    //this.options[breakPoint]
-    return (this.options as object)[breakPoint] // 偷懒的方式
-    // if (breakPoint === "xs") {
-    //   return this.options.xs!
-    // } else if (breakPoint === "sm") {
-    //   return this.options.sm!
-    // } else if (breakPoint === "md") {
-    //   return this.options.md!
-    // } else {
-    //   return this.options.lg!
-    // }
+  getValue(currentBreakPoint: string) {
+    if (currentBreakPoint === 'xs') {
+      return this.options.xs
+    } else if (currentBreakPoint === 'sm') {
+      return this.options.sm
+    } else if (currentBreakPoint === 'md') {
+      return this.options.md
+    } else if (currentBreakPoint === 'lg') {
+      return this.options.lg
+    } else {
+      return undefined
+    }
   }
 }
