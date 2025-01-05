@@ -29,26 +29,38 @@ request.interceptors.response.use(
   }
 )
 
+
+// 抽取公共部分
+export
+interface HTTpResponse<T> {
+  code: string,
+  msg: string,
+  result: T
+}
+
+// 简化后续编码
+export type ResponseType<T> = AxiosResponse<HTTpResponse<T>>
+
 //请求方式
 export class RequestAxios {
   // 查询方法
   // get和post区别- get的参数只能拼接到url地址上- 又叫做查询参数 query参数 url地址参数 地址栏参数 get参数
-  static get<T>(url: string, params?: object): Promise<T> {
-    return request.get<null, T>(url, { params })
+  static get<T>(url: string, params?: object): Promise<ResponseType<T>> {
+    return request.get<null, ResponseType<T>>(url, { params })
   }
 
   // 新增方法
-  static post<T>(url: string, data?: object): Promise<T> {
-    return request.post<null, T>(url, data)
+  static post<T>(url: string, data?: object): Promise<ResponseType<T>> {
+    return request.post<null, ResponseType<T>>(url, data)
   }
 
   // 修改方法
-  static put<T>(url: string, data?: object): Promise<T> {
-    return request.put<null, T>(url, data)
+  static put<T>(url: string, data?: object): Promise<ResponseType<T>> {
+    return request.put<null, ResponseType<T>>(url, data)
   }
 
   // 删除方法
-  static delete<T>(url: string, params?: object): Promise<T> {
-    return request.delete<null, T>(url, { params })
+  static delete<T>(url: string, data?: object): Promise<ResponseType<T>> {
+    return request.delete<null, ResponseType<T>>(url, data)
   }
 }

@@ -10,6 +10,10 @@ export struct HomeView {
   // 断点值
   @StorageProp(BreakpointConstants.BREAK_POINT_KEY)
   currentBreakpoint: string = BreakpointConstants.MD
+  @StorageProp('topHeight')
+  topHeight: number = 0
+  @StorageProp("bottomHeight")
+  bottomHeight: number = 0
   // 每个部分数据
   // 轮播图
   @State bannerList: Banner[] = []
@@ -174,7 +178,7 @@ export struct HomeView {
             .borderRadius(20)
             .padding({ left: 12 })
           }
-          .padding({ left: 16, right: 16 })
+          .padding({ left: 16, right: 16, top: this.topHeight })
         }
         .width('100%')
 
@@ -308,7 +312,11 @@ export struct HomeView {
           top: 10
         })
       }
+      .padding({
+        top: this.topHeight,
+      })
     }
     .scrollBar(BarState.Off)
+
   }
 }

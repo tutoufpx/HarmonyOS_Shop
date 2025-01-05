@@ -2,6 +2,7 @@ import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.Ab
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { display, window } from '@kit.ArkUI';
 import { Logger, BreakpointConstants } from 'basic'
+import { deviceInfo } from '@kit.BasicServicesKit';
 
 export default class EntryAbility extends UIAbility {
   private windowObj?: window.Window
@@ -39,8 +40,21 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
+    // 在不是2in1 的情况下  开启沉静模式
+    if (deviceInfo.deviceType !== "2in1") {
+      //   开启全屏
+      const win = windowStage.getMainWindowSync()
+      win.setWindowLayoutFullScreen(true)
+      //   获取安全高度
+      const topHeight = px2vp(win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect.height)
+      AppStorage.setOrCreate("topHeight", topHeight)
+      const bottomHeight = px2vp(win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).bottomRect.height)
+      AppStorage.setOrCreate("bottomHeight", bottomHeight)
+    }
     // Main window is created, set main page for this ability
-    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
+    {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
+    }
 
     windowStage.getMainWindow()
       .then((windowObj) => {
