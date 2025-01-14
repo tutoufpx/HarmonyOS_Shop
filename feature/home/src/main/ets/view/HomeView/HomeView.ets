@@ -3,7 +3,7 @@ import { BreakpointConstants, BreakPointType, CategoryItem, YGGoodsItem } from "
 import { DiscountGoodsComp, DiscountType } from "../../componnent/DiscountGoodsComp"
 import { Banner, Params } from "../../viewmodel"
 import { YGGoods } from "../../componnent/YGGoods"
-import { getBannerApi, getCategoryApi } from "../../api"
+import { getBannerApi, getCategoryApi, getHotApi, getOneApi, getPreferenceApi } from "../../api"
 
 
 @Component
@@ -135,6 +135,17 @@ export struct HomeView {
     //   获取分类数据
     const categoryList = await getCategoryApi()
     this.categories = categoryList.data.result
+    //   特惠推荐
+    const PreferenceList = await getPreferenceApi()
+    this.saleGoodsList = PreferenceList.data.result.subTypes[0].goodsItems.items
+    //   爆款推荐
+    const HotList = await getHotApi()
+    this.hotGoodsList = HotList.data.result.subTypes[1].goodsItems.items
+
+    //   一站买全
+    const OneList = await getOneApi()
+    this.oneGoodsList = OneList.data.result.subTypes[2].goodsItems.items
+
   }
 
   // 元素间隙
