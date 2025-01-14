@@ -14,5 +14,6 @@ export * from './src/main/ets/utils/Request'
 
 //导出断点工具
 export * from './src/main/ets/utils/BreakPointType'
-
+// 导出加载工具
+export *  from './src/main/ets/component/YGLoading'
 
