@@ -1,7 +1,7 @@
 //首页
 import { BreakpointConstants, BreakPointType, CategoryItem, YGGoodsItem } from "basic"
 import { DiscountGoodsComp, DiscountType } from "../../componnent/DiscountGoodsComp"
-import { Banner, HotResult, Params } from "../../viewmodel"
+import { Banner, GoodsItemsDataSource, HotResult, Params } from "../../viewmodel"
 import { YGGoods } from "../../componnent/YGGoods"
 import {
   getBannerApi,
@@ -39,6 +39,8 @@ export struct HomeView {
   @State newGoodsList: YGGoodsItem[] = []
   // 推荐商品
   @State recommendGoodsList: YGGoodsItem[] = []
+  // 使用懒加载后的推荐商品数据
+  @State recommendGoodsListLazy: GoodsItemsDataSource = new GoodsItemsDataSource()
   // 当前页数
   Page: number = 1
 
@@ -81,24 +83,24 @@ export struct HomeView {
   }
 
   // 获取接口的数据
-  async getData() {
-    // 获取轮播图数据
-    const BanList = await getBannerApi()
-    this.bannerList = BanList.data.result
-    //   获取分类数据
-    const categoryList = await getCategoryApi()
-    this.categories = categoryList.data.result
-    //   特惠推荐
-    const PreferenceList = await getPreferenceApi()
-    this.saleGoodsList = PreferenceList.data.result.subTypes[0].goodsItems.items
-    //   爆款推荐
-    const HotList = await getHotApi()
-    this.hotGoodsList = HotList.data.result.subTypes[1].goodsItems.items
-
-    //   一站买全
-    const OneList = await getOneApi()
-    this.oneGoodsList = OneList.data.result.subTypes[2].goodsItems.items
-  }
+  // async getData() {
+  //   // 获取轮播图数据
+  //   const BanList = await getBannerApi()
+  //   this.bannerList = BanList.data.result
+  //   //   获取分类数据
+  //   const categoryList = await getCategoryApi()
+  //   this.categories = categoryList.data.result
+  //   //   特惠推荐
+  //   const PreferenceList = await getPreferenceApi()
+  //   this.saleGoodsList = PreferenceList.data.result.subTypes[0].goodsItems.items
+  //   //   爆款推荐
+  //   const HotList = await getHotApi()
+  //   this.hotGoodsList = HotList.data.result.subTypes[1].goodsItems.items
+  //
+  //   //   一站买全
+  //   const OneList = await getOneApi()
+  //   this.oneGoodsList = OneList.data.result.subTypes[2].goodsItems.items
+  // }
 
   // 使用promise.allsettel来优化异步数据的获取
   async getAllData() {
@@ -127,8 +129,12 @@ export struct HomeView {
       this.newGoodsList = resArr[5].value.data.result as YGGoodsItem[]
     }
     if (resArr[6].status == 'fulfilled') {
-      this.recommendGoodsList = resArr[6].value.data.result as YGGoodsItem[]
+      // this.recommendGoodsList = resArr[6].value.data.result as YGGoodsItem[]
+
+      // 使用懒加载后的数据
+      this.recommendGoodsListLazy.reloadData(resArr[6].value.data.result as YGGoodsItem[])
     }
+
   }
 
   // 下拉获取更多数据
@@ -136,7 +142,8 @@ export struct HomeView {
     if (this.recommendGoodsList.length < 30) {
       const res = await getRecommendApi(this.Page * 8)
       // 使用concat合并数组
-      this.recommendGoodsList = this.recommendGoodsList.concat(res.data.result)
+      // this.recommendGoodsList = this.recommendGoodsList.concat(res.data.result)
+      this.recommendGoodsListLazy.reloadData(res.data.result)
     } else {
       promptAction.showToast({
         message: '哎呦,你干嘛~~'
@@ -308,10 +315,17 @@ export struct HomeView {
 
           //   推荐商品
           WaterFlow() {
-            ForEach(this.recommendGoodsList, (it: YGGoodsItem) => {
+            // ForEach(this.recommendGoodsList, (it: YGGoodsItem) => {
+            //   FlowItem() {
+            //     YGGoods({ goods: it })
+            //   }
+            // })
+            //   使用懒加载
+            LazyForEach(this.recommendGoodsListLazy, (it: YGGoodsItem) => {
               FlowItem() {
                 YGGoods({ goods: it })
               }
+
             })
           }
           .columnsTemplate(new BreakPointType({
