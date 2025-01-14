@@ -3,7 +3,15 @@ import { BreakpointConstants, BreakPointType, CategoryItem, YGGoodsItem } from "
 import { DiscountGoodsComp, DiscountType } from "../../componnent/DiscountGoodsComp"
 import { Banner, HotResult, Params } from "../../viewmodel"
 import { YGGoods } from "../../componnent/YGGoods"
-import { getBannerApi, getCategoryApi, getHotApi, getOneApi, getPreferenceApi } from "../../api"
+import {
+  getBannerApi,
+  getCategoryApi,
+  getHotApi,
+  getNewApi,
+  getOneApi,
+  getPreferenceApi,
+  getRecommendApi
+} from "../../api"
 
 
 @Component
@@ -150,7 +158,8 @@ export struct HomeView {
   // 使用promise.allsettel来优化异步数据的获取
   async getAllData() {
     //   定义数组
-    const allData = [getBannerApi(), getCategoryApi(), getPreferenceApi(), getHotApi(), getOneApi()]
+    const allData =
+      [getBannerApi(), getCategoryApi(), getPreferenceApi(), getHotApi(), getOneApi(), getNewApi(), getRecommendApi()]
     // allSettled 可以获取到每个请求状态成功或失败
     const resArr = await Promise.allSettled(allData)
     //   判断状态
@@ -168,6 +177,12 @@ export struct HomeView {
     }
     if (resArr[4].status == 'fulfilled') {
       this.oneGoodsList = (resArr[4].value.data.result as HotResult).subTypes[2].goodsItems.items
+    }
+    if (resArr[5].status == 'fulfilled') {
+      this.newGoodsList = resArr[5].value.data.result as YGGoodsItem[]
+    }
+    if (resArr[6].status == 'fulfilled') {
+      this.recommendGoodsList = resArr[6].value.data.result as YGGoodsItem[]
     }
   }
 

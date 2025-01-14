@@ -1,5 +1,5 @@
 import { RequestAxios } from "basic"
-import { Banner, CategoryItem, HotResult } from "../viewmodel"
+import { Banner, CategoryItem, HotResult, YGGoodsItem } from "../viewmodel"
 
 //获取轮播图
 export const getBannerApi = () => {
@@ -24,4 +24,14 @@ export const getHotApi = () => {
 //获取 一战买全数据
 export const getOneApi = () => {
   return RequestAxios.get<HotResult>('/hot/oneStop')
+}
+
+//获取新鲜好物数据
+export const getNewApi = () => {
+  return RequestAxios.get<YGGoodsItem[]>('/home/new')
+}
+
+//获取推荐数据
+export const getRecommendApi = (limit: number = 8) => {
+  return RequestAxios.get<YGGoodsItem[]>('/home/recommend', { params: { limit } })
 }
