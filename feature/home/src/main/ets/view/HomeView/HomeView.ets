@@ -3,6 +3,7 @@ import { BreakpointConstants, BreakPointType, CategoryItem, YGGoodsItem } from "
 import { DiscountGoodsComp, DiscountType } from "../../componnent/DiscountGoodsComp"
 import { Banner, Params } from "../../viewmodel"
 import { YGGoods } from "../../componnent/YGGoods"
+import { getBannerApi, getCategoryApi } from "../../api"
 
 
 @Component
@@ -122,8 +123,18 @@ export struct HomeView {
     })
   }
 
-  aboutToAppear(): void {
-    this.mockData()
+  aboutToAppear() {
+    this.getData()
+  }
+
+  // 获取接口的数据
+  async getData() {
+    // 获取轮播图数据
+    const BanList = await getBannerApi()
+    this.bannerList = BanList.data.result
+    //   获取分类数据
+    const categoryList = await getCategoryApi()
+    this.categories = categoryList.data.result
   }
 
   // 元素间隙
@@ -138,7 +149,7 @@ export struct HomeView {
         Stack({ alignContent: Alignment.Top }) {
           //     轮播图
           Swiper() {
-            ForEach(this.bannerList, (it: Banner, i: number) => {
+            ForEach(this.bannerList, (it: Banner) => {
               Image(it.imgUrl)
             })
           }
@@ -178,7 +189,7 @@ export struct HomeView {
             .borderRadius(20)
             .padding({ left: 12 })
           }
-          .padding({ left: 16, right: 16, top: this.topHeight })
+          .padding({ left: 16, right: 16, })
         }
         .width('100%')
 
