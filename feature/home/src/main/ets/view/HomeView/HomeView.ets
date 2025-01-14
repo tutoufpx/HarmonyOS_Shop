@@ -1,7 +1,7 @@
 //首页
 import { BreakpointConstants, BreakPointType, CategoryItem, YGGoodsItem } from "basic"
 import { DiscountGoodsComp, DiscountType } from "../../componnent/DiscountGoodsComp"
-import { Banner, Params } from "../../viewmodel"
+import { Banner, HotResult, Params } from "../../viewmodel"
 import { YGGoods } from "../../componnent/YGGoods"
 import { getBannerApi, getCategoryApi, getHotApi, getOneApi, getPreferenceApi } from "../../api"
 
@@ -124,7 +124,7 @@ export struct HomeView {
   }
 
   aboutToAppear() {
-    this.getData()
+    this.getAllData()
   }
 
   // 获取接口的数据
@@ -145,7 +145,30 @@ export struct HomeView {
     //   一站买全
     const OneList = await getOneApi()
     this.oneGoodsList = OneList.data.result.subTypes[2].goodsItems.items
+  }
 
+  // 使用promise.allsettel来优化异步数据的获取
+  async getAllData() {
+    //   定义数组
+    const allData = [getBannerApi(), getCategoryApi(), getPreferenceApi(), getHotApi(), getOneApi()]
+    // allSettled 可以获取到每个请求状态成功或失败
+    const resArr = await Promise.allSettled(allData)
+    //   判断状态
+    if (resArr[0].status == 'fulfilled') {
+      this.bannerList = resArr[0].value.data.result as Banner[]
+    }
+    if (resArr[1].status == 'fulfilled') {
+      this.categories = resArr[1].value.data.result as CategoryItem[]
+    }
+    if (resArr[2].status === 'fulfilled') {
+      this.saleGoodsList = (resArr[2].value.data.result as HotResult).subTypes[0].goodsItems.items
+    }
+    if (resArr[3].status == 'fulfilled') {
+      this.hotGoodsList = (resArr[3].value.data.result as HotResult).subTypes[1].goodsItems.items
+    }
+    if (resArr[4].status == 'fulfilled') {
+      this.oneGoodsList = (resArr[4].value.data.result as HotResult).subTypes[2].goodsItems.items
+    }
   }
 
   // 元素间隙
