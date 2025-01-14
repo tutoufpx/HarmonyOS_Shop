@@ -12,6 +12,7 @@ import {
   getPreferenceApi,
   getRecommendApi
 } from "../../api"
+import { promptAction } from "@kit.ArkUI"
 
 
 @Component
@@ -38,6 +39,8 @@ export struct HomeView {
   @State newGoodsList: YGGoodsItem[] = []
   // 推荐商品
   @State recommendGoodsList: YGGoodsItem[] = []
+  // 当前页数
+  Page: number = 1
 
   // 自定义
   @Builder
@@ -71,64 +74,6 @@ export struct HomeView {
     .padding(10)
     .backgroundColor(params.bg)
     .borderRadius(8)
-  }
-
-  // 模拟数据
-  mockData() {
-    this.bannerList = new Array(6).fill({
-      id: "42",
-      imgUrl: "https://img1.baidu.com/it/u=2148799435,3416689533&fm=253&fmt=auto?w=607&h=405",
-      hrefUrl: "/category/1181622006",
-      type: "1"
-    })
-
-    this.categories = new Array(10).fill({
-      id: "1181622001",
-      name: "气质女装",
-      picture: "https://img2.baidu.com/it/u=982409805,3816813331&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1736182800&t=3e10028bd81a47a43a02b8c7eb0317eb"
-    })
-
-    this.saleGoodsList = new Array(6).fill({
-      "id": "1111002",
-      "name": "剪出精致感，金致圆柄复古剪刀",
-      "desc": "轻薄设计，简约大方",
-      "price": "9.90",
-      "picture": "https://img1.baidu.com/it/u=2654427060,739450640&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1736182800&t=97d9d04440920a044a1036eed5362a83",
-      "orderNum": 172
-    },)
-
-    this.hotGoodsList = new Array(8).fill({
-      "id": "1135059",
-      "name": "手工八年老陈醋500毫升",
-      "desc": "地道醇香，醋酸浓郁",
-      "price": "30.00",
-      "picture": "https://yanxuan-item.nosdn.127.net/77da20e77b02830a26f931901ac1a9e0.png",
-      "orderNum": 147
-    },)
-    this.oneGoodsList = new Array(8).fill({
-      "id": "1135079",
-      "name": "免浸泡，12种谷物一次同享，五谷米400克",
-      "desc": "无需浸泡，同煮同熟",
-      "price": "9.90",
-      "picture": "https://yanxuan-item.nosdn.127.net/bfe70bd66efe94f2f18061c707d2a097.png",
-      "orderNum": 144
-    })
-    this.newGoodsList = new Array(8).fill({
-      "id": "4027998",
-      "name": "亮碟多效合一洗涤块495g",
-      "desc": "洗碗机专用，强力去污",
-      "price": "69.90",
-      "picture": "https://yanxuan-item.nosdn.127.net/e07c2b63765cf9f4a46d489c6e09c1c1.jpg",
-      "orderNum": 643
-    })
-
-    this.recommendGoodsList = new Array(8).fill({
-      "id": "4033959",
-      "name": "我可是真爱粉,谁都不可以黑我家鸽鸽",
-      "price": "996",
-      "picture": "https://i1.hdslb.com/bfs/archive/f35e6b328c4bdcf957c7b9b85602912afaeee651.jpg",
-      "payCount": 1
-    })
   }
 
   aboutToAppear() {
@@ -183,6 +128,19 @@ export struct HomeView {
     }
     if (resArr[6].status == 'fulfilled') {
       this.recommendGoodsList = resArr[6].value.data.result as YGGoodsItem[]
+    }
+  }
+
+  // 下拉获取更多数据
+  async getMoreData() {
+    if (this.recommendGoodsList.length < 30) {
+      const res = await getRecommendApi(this.Page * 8)
+      // 使用concat合并数组
+      this.recommendGoodsList = this.recommendGoodsList.concat(res.data.result)
+    } else {
+      promptAction.showToast({
+        message: '哎呦,你干嘛~~'
+      })
     }
   }
 
@@ -377,6 +335,10 @@ export struct HomeView {
       })
     }
     .scrollBar(BarState.Off)
+    .onReachEnd(() => {
+      this.Page++;
+      this.getMoreData()
+    })
 
   }
 }
