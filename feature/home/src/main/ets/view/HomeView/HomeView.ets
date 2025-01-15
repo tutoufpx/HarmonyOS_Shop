@@ -133,6 +133,8 @@ export struct HomeView {
     }
     if (resArr[1].status == 'fulfilled') {
       this.categories = resArr[1].value.data.result as CategoryItem[]
+      //   在分类中会用到这个数据
+      AppStorage.setOrCreate('categoryList', this.categories)
     }
     if (resArr[2].status === 'fulfilled') {
       this.saleGoodsList = (resArr[2].value.data.result as HotResult).subTypes[0].goodsItems.items
