@@ -1,9 +1,9 @@
 @Component
 export struct YGLoading {
-  LoadingWidth: number = 100
+  // 宽度可以由外部传入
+  loadingWidth: number = 80
 
   build() {
-    //   使用帧动画
     ImageAnimator()
       .images([
         { src: $r('app.media.loading_01') },
@@ -11,10 +11,10 @@ export struct YGLoading {
         { src: $r('app.media.loading_03') },
         { src: $r('app.media.loading_04') }
       ])
-      .duration(199)
       .state(AnimationStatus.Running)
+      .duration(199)
       .iterations(-1)
-      .width(this.LoadingWidth)
-      .height(this.LoadingWidth)
+      .width(this.loadingWidth)
+      .aspectRatio(3)
   }
 }
