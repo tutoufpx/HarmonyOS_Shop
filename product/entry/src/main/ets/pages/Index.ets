@@ -5,12 +5,16 @@ import { CategoryView } from 'category/src/main/ets/view/CategoryView/CategoryVi
 
 import { HomeView } from 'home/src/main/ets/view/HomeView/HomeView'
 import { MyHome } from 'my/src/main/ets/view/MyHome/MyHome'
+import Storage from '@system.storage'
 
 
 @Entry
 @Component
 struct Index {
+  bottomHeight: Length | LengthMetrics | undefined
   @StorageProp('currentBreakpoint') breakPoint: string = 'xs'
+  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeBottom') safeBottom: number = 0
   //  当前的tab下标
   @State currentTabIndex: number = 0
   TabList: TabBarItem[] = [
@@ -26,6 +30,7 @@ struct Index {
       Image(this.currentTabIndex === index ? item.selImg : item.img)
         .width(24)
         .aspectRatio(1)
+
       Text(item.text)
 
         .fontSize(12)
@@ -35,6 +40,7 @@ struct Index {
   }
 
   build() {
+
     Tabs({
       barPosition: new BreakPointType({
         xs: BarPosition.End,

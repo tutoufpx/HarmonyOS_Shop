@@ -20,9 +20,9 @@ export struct HomeView {
   // 断点值
   @StorageProp(BreakpointConstants.BREAK_POINT_KEY)
   currentBreakpoint: string = BreakpointConstants.MD
-  @StorageProp('topHeight')
+  @StorageProp('safeTop')
   topHeight: number = 0
-  @StorageProp("bottomHeight")
+  @StorageProp("safeBottom")
   bottomHeight: number = 0
   // 每个部分数据
   // 轮播图
@@ -391,7 +391,6 @@ export struct HomeView {
       .onRefreshing(async () => {
         await this.onRefresh()
       })
-
     }
 
 

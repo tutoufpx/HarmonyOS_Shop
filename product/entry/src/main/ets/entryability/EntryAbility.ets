@@ -46,10 +46,11 @@ export default class EntryAbility extends UIAbility {
       const win = windowStage.getMainWindowSync()
       win.setWindowLayoutFullScreen(true)
       //   获取安全高度
-      const topHeight = px2vp(win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect.height)
-      AppStorage.setOrCreate("topHeight", topHeight)
-      const bottomHeight = px2vp(win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).bottomRect.height)
-      AppStorage.setOrCreate("bottomHeight", bottomHeight)
+      const topHeight = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect
+      AppStorage.setOrCreate<number>('safeTop', px2vp(topHeight.height))
+      const bottom = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
+        .bottomRect
+      AppStorage.setOrCreate<number>('safeBottom', px2vp(bottom.height))
     }
     // Main window is created, set main page for this ability
     {

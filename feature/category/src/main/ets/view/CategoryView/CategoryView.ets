@@ -1,5 +1,4 @@
-import { CategoryItem, CategoryItemChild } from "basic"
-import image from "@ohos.multimedia.image"
+import { CategoryItem, CategoryItemChild, YGNavbar } from "basic"
 
 //分类
 @Component
@@ -12,6 +11,15 @@ export struct CategoryView {
 
   build() {
     Column() {
+      YGNavbar({
+        title: '分类',
+        showLeftIcon: false,
+        showRightIcon: true,
+        rightIcon: $r('app.media.ic_public_search')
+      })
+        .border({ width: { bottom: 0.5 }, color: '#F5F4F9' })
+
+
       Row() {
         Column() {
           ForEach(this.categoryList, (it: CategoryItem, i: number) => {
