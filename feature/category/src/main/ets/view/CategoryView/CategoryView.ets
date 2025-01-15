@@ -44,7 +44,7 @@ export struct CategoryView {
 
         Scroll() {
           Column() {
-            Image('https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meikou/c1/qznz.png')
+            Image(this.categoryList[this.currentIndex].picture)
               .width('100%')
               .height(136)
               .margin({ bottom: 8 })
@@ -53,14 +53,14 @@ export struct CategoryView {
               .objectFit(ImageFit.Contain)
             //   子分类
             GridRow({ columns: 2, gutter: 8 }) {
-              ForEach(Array.from({ length: 10 }), (subit: CategoryItemChild, i: number) => {
+              ForEach(this.categoryList[this.currentIndex].children, (subit: CategoryItemChild, i: number) => {
 
                 GridCol() {
                   Column() {
-                    Image('https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meikou/c2/qznz_bq.png?quality=95&imageView')
+                    Image(subit.picture)
                       .width(64)
                       .aspectRatio(1)
-                    Text('半裙')
+                    Text(subit.name)
                       .fontSize(14)
                       .fontColor($r('[basic].color.text'))
                       .margin({ top: 8 })
