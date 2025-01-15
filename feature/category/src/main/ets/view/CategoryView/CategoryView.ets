@@ -1,4 +1,4 @@
-import { CategoryItem, CategoryItemChild, YGNavbar } from "basic"
+import { BreakpointConstants, CategoryItem, CategoryItemChild, YGNavbar } from "basic"
 
 //分类
 @Component
@@ -6,6 +6,8 @@ export struct CategoryView {
   // 分类数据
   @StorageProp('categoryList')
   categoryList: CategoryItem[] = []
+  @StorageProp(BreakpointConstants.BREAK_POINT_KEY)
+  currentBreakpoint: string = BreakpointConstants.SM
   // 当前的下标
   @State currentIndex: number = 0
 
@@ -51,8 +53,9 @@ export struct CategoryView {
               .borderRadius(8)
               .backgroundColor('#f6f6f6')
               .objectFit(ImageFit.Contain)
+              .height(this.currentBreakpoint === BreakpointConstants.SM ? 136 : 316)
             //   子分类
-            GridRow({ columns: 2, gutter: 8 }) {
+            GridRow({ columns: { sm: 2, md: 3, lg: 4 }, gutter: 8 }) {
               ForEach(this.categoryList[this.currentIndex].children, (subit: CategoryItemChild, i: number) => {
 
                 GridCol() {
