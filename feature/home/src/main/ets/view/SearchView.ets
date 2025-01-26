@@ -2,7 +2,6 @@ import { window } from "@kit.ArkUI"
 
 @Builder
 function SearchViewBuilder() {
-
   SearchView()
 }
 
@@ -40,6 +39,7 @@ export struct SearchView {
             .margin(13)
             .onClick(() => {
               // TODO
+              this.pageStack.pop(true)
             })
 
 
@@ -59,6 +59,7 @@ export struct SearchView {
             .defaultFocus(true)
             .onSubmit((value) => {
               //   TODO
+              this.pageStack.pushPathByName('SearchResultView', value)
             })
 
         }

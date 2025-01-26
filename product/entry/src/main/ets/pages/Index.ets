@@ -5,7 +5,7 @@ import { CategoryView } from 'category/src/main/ets/view/CategoryView/CategoryVi
 
 import { HomeView } from 'home/src/main/ets/view/HomeView/HomeView'
 import { MyHome } from 'my/src/main/ets/view/MyHome/MyHome'
-import Storage from '@system.storage'
+
 
 
 @Entry
