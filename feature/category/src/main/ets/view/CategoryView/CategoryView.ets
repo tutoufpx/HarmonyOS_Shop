@@ -10,6 +10,9 @@ export struct CategoryView {
   currentBreakpoint: string = BreakpointConstants.SM
   // 当前的下标
   @State currentIndex: number = 0
+  // 页面栈
+  @Consume
+  pageStack: NavPathStack
 
   build() {
     Column() {
@@ -17,7 +20,10 @@ export struct CategoryView {
         title: '分类',
         showLeftIcon: false,
         showRightIcon: true,
-        rightIcon: $r('app.media.ic_public_search')
+        rightIcon: $r('app.media.ic_public_search'),
+        rightClickHandler: () => {
+          this.pageStack.pushPathByName('SearchView', null)
+        }
       })
         .border({ width: { bottom: 0.5 }, color: '#F5F4F9' })
 

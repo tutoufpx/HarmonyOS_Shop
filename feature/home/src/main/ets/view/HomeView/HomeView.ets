@@ -47,6 +47,13 @@ export struct HomeView {
   @State isLoading: boolean = false
   // 下拉刷新
   @State isRefresh: boolean = false
+  //页面栈
+  @Consume pageStack: NavPathStack
+
+  //去搜索页面
+  toSearchPage() {
+    this.pageStack.pushPathByName('SearchView', null)
+  }
 
   // 自定义
   @Builder
@@ -234,9 +241,15 @@ export struct HomeView {
                 .borderRadius(20)
                 .padding({ left: 12 })
               }
-              .padding({ left: 16, right: 16, })
+              .padding({ left: 16, right: 16, top: this.topHeight })
             }
             .width('100%')
+            .onClick(() => {
+              // 去搜索页面
+              this.toSearchPage()
+
+            })
+
 
             //   分类
             Column({ space: 10 }) {

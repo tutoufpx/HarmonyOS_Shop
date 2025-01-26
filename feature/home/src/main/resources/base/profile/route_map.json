@@ -1,0 +1,12 @@
+{
+  "routerMap": [
+    {
+      "name": "SearchView",
+      "pageSourceFile": "src/main/ets/view/SearchView.ets",
+      "buildFunction": "SearchViewBuilder",
+      "data": {
+        "description": "this is SearchView"
+      }
+    }
+  ]
+}

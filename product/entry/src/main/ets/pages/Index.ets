@@ -22,6 +22,8 @@ struct Index {
     { text: '分类', img: $r('app.media.ic_public_pro_normal'), selImg: $r('app.media.ic_public_pro_active') },
     { text: '购物袋', img: $r('app.media.ic_public_cart_normal'), selImg: $r('app.media.ic_public_cart_active') },
     { text: '我的', img: $r('app.media.ic_public_my_normal'), selImg: $r('app.media.ic_public_my_active') },]
+  // 页面栈
+  @Provide pageStack: NavPathStack = new NavPathStack()
 
   // 自定义导航栏
   @Builder
@@ -41,36 +43,39 @@ struct Index {
 
   build() {
 
-    Tabs({
-      barPosition: new BreakPointType({
-        xs: BarPosition.End,
+    Navigation(this.pageStack) {
+      Tabs({
+        barPosition: new BreakPointType({
+          xs: BarPosition.End,
+          sm: BarPosition.End,
+          md: BarPosition.End,
+          lg: BarPosition.Start
+        }).getValue(this.breakPoint), index: $$this.currentTabIndex
+      }) {
+        ForEach(this.TabList, (item: TabBarItem, i: number) => {
+          TabContent() {
+            if (i === 0) {
+              HomeView()
+            } else if (i === 1) {
+              CategoryView()
+            } else if (i === 2) {
+              CartView()
+            } else if (i === 3) {
+              MyHome()
+            }
+
+          }.tabBar(this.tabBuilder(item, i))
+        })
+      }
+      .scrollable(false)
+      .barPosition(new BreakPointType({
         sm: BarPosition.End,
         md: BarPosition.End,
         lg: BarPosition.Start
-      }).getValue(this.breakPoint), index: $$this.currentTabIndex
-    }) {
-      ForEach(this.TabList, (item: TabBarItem, i: number) => {
-        TabContent() {
-          if (i === 0) {
-            HomeView()
-          } else if (i === 1) {
-            CategoryView()
-          } else if (i === 2) {
-            CartView()
-          } else if (i === 3) {
-            MyHome()
-          }
-
-        }.tabBar(this.tabBuilder(item, i))
-      })
-
+      }).getValue(this.breakPoint))
+      .vertical(this.breakPoint === BreakpointConstants.LG ? true : false)
     }
-    .scrollable(false)
-    .barPosition(new BreakPointType({
-      sm: BarPosition.End,
-      md: BarPosition.End,
-      lg: BarPosition.Start
-    }).getValue(this.breakPoint))
-    .vertical(this.breakPoint === BreakpointConstants.LG ? true : false)
+    .hideTitleBar(true)
+    .mode(NavigationMode.Stack)
   }
 }
