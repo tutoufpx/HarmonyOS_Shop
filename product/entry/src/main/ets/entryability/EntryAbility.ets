@@ -51,6 +51,7 @@ export default class EntryAbility extends UIAbility {
       const bottom = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
         .bottomRect
       AppStorage.setOrCreate<number>('safeBottom', px2vp(bottom.height))
+      
     }
     // Main window is created, set main page for this ability
     {

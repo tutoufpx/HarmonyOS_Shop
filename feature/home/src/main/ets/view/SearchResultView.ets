@@ -206,7 +206,7 @@ export struct SearchResultView {
             return '没有更多数据了~~'
           }
         })
-
+          .layoutWeight(1)
       }
     }
     .hideTitleBar(true)

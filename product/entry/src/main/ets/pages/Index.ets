@@ -7,7 +7,6 @@ import { HomeView } from 'home/src/main/ets/view/HomeView/HomeView'
 import { MyHome } from 'my/src/main/ets/view/MyHome/MyHome'
 
 
-
 @Entry
 @Component
 struct Index {
@@ -67,6 +66,7 @@ struct Index {
           }.tabBar(this.tabBuilder(item, i))
         })
       }
+      .padding({ bottom: this.safeBottom })
       .scrollable(false)
       .barPosition(new BreakPointType({
         sm: BarPosition.End,

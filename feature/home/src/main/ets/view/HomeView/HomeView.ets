@@ -241,7 +241,7 @@ export struct HomeView {
                 .borderRadius(20)
                 .padding({ left: 12 })
               }
-              .padding({ left: 16, right: 16, top: this.topHeight })
+              .padding({ left: 16, right: 16, })
             }
             .width('100%')
             .onClick(() => {
