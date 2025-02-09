@@ -73,8 +73,6 @@ export struct SearchResultView {
     this.params.keyword = this.pageStack.getParamByName('SearchResultView')[0] as string
     // TODO 获取查询数据
     this.getSearchData()
-
-
   }
 
   paramsChange() {
@@ -131,6 +129,11 @@ export struct SearchResultView {
               field: item.field,
               sortField: this.params.sortField,
               sortMethod: this.params.sortMethod,
+              ClickChange: (sortFiled: SortField, sortMethod: SortMethod) => {
+                this.params.sortField = sortFiled
+                this.params.sortMethod = sortMethod
+                this.getSearchData()
+              }
 
             })
           })
@@ -172,9 +175,10 @@ struct SortItemComp {
   @Prop sortField: SortField = 'publishTime'
   // 父组件的排序方法
   @Prop sortMethod: SortMethod = 'desc'
-
   // TODO 点击筛选条件，回传  sortField 和 sortMethod 给父组件（回调函数）
-
+  // 这是一个回调函数,可以传递给父组件,然后点击可以实现切换排序效果
+  ClickChange = (sortFiled: SortField, sortMethod: SortMethod) => {
+  }
 
   build() {
     Row() {
@@ -197,7 +201,12 @@ struct SortItemComp {
       .justifyContent(FlexAlign.Center)
     }
     .onClick(() => {
-
+      //点击实现排序方法的切换
+      if (this.field == this.sortField) {
+        this.ClickChange(this.field, this.sortMethod === 'desc' ? 'asc' : 'desc')
+      } else {
+        this.ClickChange(this.field, 'desc')
+      }
     })
   }
 }
