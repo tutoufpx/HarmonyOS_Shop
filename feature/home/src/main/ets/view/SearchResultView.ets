@@ -1,6 +1,8 @@
 import { YGGoodsItem, YGPullToRefresh } from "basic"
 import { getSearchGoodsApi } from "../api"
 import { YGGoods } from "../componnent/YGGoods"
+import { promptAction } from "@kit.ArkUI"
+import { GoodsItemsDataSource } from "../viewmodel"
 
 
 // 联合类型
@@ -46,6 +48,8 @@ export struct SearchResultView {
     "picture": "https://yanxuan-item.nosdn.127.net/937a8e46a9284e8f7e00e13911ecfbe7.png",
     "payCount": 0
   })
+  // 懒加载的数据
+  @State LazyData: GoodsItemsDataSource = new GoodsItemsDataSource()
   // 查询参数
   @State
   @Watch('paramsChange')
@@ -67,6 +71,7 @@ export struct SearchResultView {
   scroller = new Scroller()
   @Consume
   pageStack: NavPathStack
+  page: number = 1
 
   aboutToAppear(): void {
     // TODO 解析参数
@@ -82,6 +87,9 @@ export struct SearchResultView {
   async getSearchData() {
     const res = await getSearchGoodsApi(this.params)
     this.data = res.data.result.pageData.items
+    // 懒加载数据
+    this.LazyData.reloadData(res.data.result.pageData.items)
+    this.page = res.data.result.pageData.pages
   }
 
   //将瀑布流抽取成组件,方便后续使用
@@ -163,14 +171,14 @@ export struct SearchResultView {
         .border({ width: { bottom: 0.5 }, color: $r('[basic].color.border') })
 
         YGPullToRefresh({
-          data: $data,
+          data: $LazyData,
           scroller: this.scroller,
           customList: () => {
             this.WaterFlowBuilder()
           },
           //下拉刷新
           onRefresh: async () => {
-            this.data = []
+            this.LazyData.reloadData([])
             this.params.page = 1
             await this.getSearchData()
             return '下拉刷新成功'
@@ -178,15 +186,27 @@ export struct SearchResultView {
           //触底加载
 
           onLoadMore: async () => {
-            return new Promise<string>((resolve, reject) => {
-              setTimeout(() => {
-                resolve('');
-              }, 1000);
-            });
+            // 如果还有数据就继续加载数据,没有的就提示用户没有数据
+            if (this.params.page < this.page) {
+              this.params.page++
+              const res = await getSearchGoodsApi(this.params)
+              //使用懒加载的数据  将数据拼接在最后
+              res.data.result.pageData.items.forEach((data) => {
+                this.LazyData.pushData(data)
+              })
 
+              return '加载成功'
 
+            } else {
+              promptAction.showToast({
+                message: '没有更多数据了~~'
+              })
+
+            }
+            return '没有更多数据了~~'
           }
         })
+
       }
     }
     .hideTitleBar(true)
