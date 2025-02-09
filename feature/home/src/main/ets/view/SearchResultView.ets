@@ -1,4 +1,4 @@
-import { YGGoodsItem } from "basic"
+import { YGGoodsItem, YGPullToRefresh } from "basic"
 import { getSearchGoodsApi } from "../api"
 import { YGGoods } from "../componnent/YGGoods"
 
@@ -84,6 +84,21 @@ export struct SearchResultView {
     this.data = res.data.result.pageData.items
   }
 
+  //将瀑布流抽取成组件,方便后续使用
+  @Builder
+  WaterFlowBuilder() {
+    WaterFlow({ scroller: this.scroller }) {
+      ForEach(this.data, (item: YGGoodsItem) => {
+        FlowItem() {
+          YGGoods({ goods: item, smallImage: true })
+        }
+      })
+    }
+    .columnsTemplate("1fr 1fr")
+    .columnsGap(0.5)
+    .rowsGap(0.5)
+  }
+
   build() {
     NavDestination() {
 
@@ -147,17 +162,31 @@ export struct SearchResultView {
         .justifyContent(FlexAlign.SpaceBetween)
         .border({ width: { bottom: 0.5 }, color: $r('[basic].color.border') })
 
-        WaterFlow({ scroller: this.scroller }) {
-          ForEach(this.data, (item: YGGoodsItem) => {
-            FlowItem() {
-              YGGoods({ goods: item, smallImage: true })
-            }
-          })
-        }
-        .columnsTemplate("1fr 1fr")
-        .columnsGap(0.5)
-        .rowsGap(0.5)
-        .layoutWeight(1)
+        YGPullToRefresh({
+          data: $data,
+          scroller: this.scroller,
+          customList: () => {
+            this.WaterFlowBuilder()
+          },
+          //下拉刷新
+          onRefresh: async () => {
+            this.data = []
+            this.params.page = 1
+            await this.getSearchData()
+            return '下拉刷新成功'
+          },
+          //触底加载
+
+          onLoadMore: async () => {
+            return new Promise<string>((resolve, reject) => {
+              setTimeout(() => {
+                resolve('');
+              }, 1000);
+            });
+
+
+          }
+        })
       }
     }
     .hideTitleBar(true)

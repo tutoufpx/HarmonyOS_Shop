@@ -18,4 +18,6 @@ export * from './src/main/ets/utils/BreakPointType'
 export *  from './src/main/ets/component/YGLoading'
 // 导出顶部导航栏
 export  * from  './src/main/ets/component/YGNavbar'
+//导出下拉刷新效果组件
+export  * from  './src/main/ets/component/YGPullToRefresh'
 
