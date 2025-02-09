@@ -35,3 +35,5 @@ export const getNewApi = () => {
 export const getRecommendApi = (limit: number = 8) => {
   return RequestAxios.get<YGGoodsItem[]>('/home/recommend', { params: { limit } })
 }
+
+//

@@ -48,7 +48,10 @@ export interface GoodsItems {
   pages: number;
   page: number;
   items: YGGoodsItem[]
+}
 
+export interface SearchResult {
+  pageData: GoodsItems
 }
 
 

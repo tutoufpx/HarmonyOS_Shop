@@ -247,7 +247,6 @@ export struct HomeView {
             .onClick(() => {
               // 去搜索页面
               this.toSearchPage()
-
             })
 
 
