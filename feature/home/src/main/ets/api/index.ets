@@ -1,5 +1,6 @@
 import { RequestAxios } from "basic"
-import { Banner, CategoryItem, HotResult, YGGoodsItem } from "../viewmodel"
+import { SearchParams } from "../view/SearchResultView"
+import { Banner, CategoryItem, HotResult, SearchResult, YGGoodsItem } from "../viewmodel"
 
 //获取轮播图
 export const getBannerApi = () => {
@@ -36,4 +37,10 @@ export const getRecommendApi = (limit: number = 8) => {
   return RequestAxios.get<YGGoodsItem[]>('/home/recommend', { params: { limit } })
 }
 
-//
+//搜索的结果
+export const getSearchGoodsApi = (data: SearchParams) => {
+
+  return RequestAxios.post<SearchResult>('/search/all', data)
+
+
+}

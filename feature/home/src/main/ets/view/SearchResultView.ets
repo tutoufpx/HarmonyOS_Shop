@@ -1,4 +1,5 @@
 import { YGGoodsItem } from "basic"
+import { getSearchGoodsApi } from "../api"
 import { YGGoods } from "../componnent/YGGoods"
 
 
@@ -70,10 +71,19 @@ export struct SearchResultView {
   aboutToAppear(): void {
     // TODO 解析参数
     this.params.keyword = this.pageStack.getParamByName('SearchResultView')[0] as string
-    // TODO 查询数据
+    // TODO 获取查询数据
+    this.getSearchData()
+
+
   }
 
   paramsChange() {
+  }
+
+  //获取查询的数据
+  async getSearchData() {
+    const res = await getSearchGoodsApi(this.params)
+    this.data = res.data.result.pageData.items
   }
 
   build() {
@@ -102,7 +112,8 @@ export struct SearchResultView {
             .height(36)
             .caretStyle({ color: $r('[basic].color.red') })
             .onSubmit((value) => {
-
+              this.params.keyword = value
+              this.getSearchData()
             })
         }
         .padding({ top: this.safeTop, right: 16 })
