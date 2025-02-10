@@ -2,6 +2,7 @@ import { speechRecognizer } from '@kit.CoreSpeechKit';
 import { KeyboardAvoidMode, window } from '@kit.ArkUI';
 import { audio } from '@kit.AudioKit';
 import { permissionPlugin } from 'basic';
+import { fileIo as fs } from '@kit.CoreFileKit';
 
 export enum VoiceState {
   DEFAULT,
@@ -21,6 +22,47 @@ export struct AudioSearchComp {
   }
 
   async startRecord() {
+    //结合官方代码整合
+    let audioStreamInfo: audio.AudioStreamInfo = {
+      samplingRate: audio.AudioSamplingRate.SAMPLE_RATE_48000, // 采样率
+      channels: audio.AudioChannel.CHANNEL_2, // 通道
+      sampleFormat: audio.AudioSampleFormat.SAMPLE_FORMAT_S16LE, // 采样格式
+      encodingType: audio.AudioEncodingType.ENCODING_TYPE_RAW // 编码格式
+    };
+    let audioCapturerInfo: audio.AudioCapturerInfo = {
+      source: audio.SourceType.SOURCE_TYPE_MIC, // 音源类型
+      capturerFlags: 0 // 音频采集器标志
+    };
+    let audioCapturerOptions: audio.AudioCapturerOptions = {
+      streamInfo: audioStreamInfo,
+      capturerInfo: audioCapturerInfo
+    };
+
+    let path = getContext().cacheDir;
+    let filePath = path + '/StarWars10s-2C-48000-4SW.pcm';
+    let file: fs.File = fs.openSync(filePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    let bufferSize: number = 0
+
+    class Options {
+      offset?: number;
+      length?: number;
+    }
+
+    let readDataCallback = (buffer: ArrayBuffer) => {
+      let options: Options = {
+        offset: bufferSize,
+        length: buffer.byteLength
+      }
+      fs.writeSync(file.fd, buffer, options);
+      bufferSize += buffer.byteLength;
+    };
+
+    this.audioCapturer?.on('readData', readDataCallback)
+    //开始录制
+    this.audioCapturer?.start();
+    //调整录制状态
+    this.voiceState = VoiceState.VOICING
+    // console.log('1', '开始录制语音~~~')
 
   }
 
