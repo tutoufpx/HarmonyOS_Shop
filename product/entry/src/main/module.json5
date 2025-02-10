@@ -5,7 +5,12 @@
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",
     "requestPermissions": [{
-      "name": "ohos.permission.INTERNET"
+      "name": "ohos.permission.INTERNET",
+
+    },{
+      "name": "ohos.permission.MICROPHONE",
+      "reason": "$string:app_name",
+      "usedScene": {}
     }],
     "deviceTypes": [
       "phone",

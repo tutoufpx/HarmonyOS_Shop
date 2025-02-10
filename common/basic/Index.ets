@@ -20,4 +20,6 @@ export *  from './src/main/ets/component/YGLoading'
 export  * from  './src/main/ets/component/YGNavbar'
 //导出下拉刷新效果组件
 export  * from  './src/main/ets/component/YGPullToRefresh'
+//导出权限申请
+export * from './src/main/ets/utils/PermissionPlugin'
 

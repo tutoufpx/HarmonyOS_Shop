@@ -10,6 +10,6 @@
     ],
     "deliveryWithInstall": true,
     "pages": "$profile:main_pages",
-    "routerMap": "$profile:route_map"
+    "routerMap": "$profile:route_map",
   }
 }

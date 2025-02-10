@@ -1,6 +1,7 @@
 import { speechRecognizer } from '@kit.CoreSpeechKit';
 import { KeyboardAvoidMode, window } from '@kit.ArkUI';
 import { audio } from '@kit.AudioKit';
+import { permissionPlugin } from 'basic';
 
 export enum VoiceState {
   DEFAULT,
@@ -33,6 +34,9 @@ export struct AudioSearchComp {
       .then((win) => {
         win.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.RESIZE)
       })
+
+    //申请麦克风权限
+    permissionPlugin.requestPermissions(['ohos.permission.MICROPHONE'])
 
   }
 
